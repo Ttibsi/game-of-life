@@ -1,2 +1,2 @@
 # game-of-life
-Conways Game of Life built using OpenGL 
+Conways Game of Life built using OpenGL

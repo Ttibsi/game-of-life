@@ -10,7 +10,7 @@ all: build
 run: build/gol
 	./build/gol
 
-build: $(OBJDIR)/$(OBJECTS) 
+build: $(OBJDIR)/$(OBJECTS)
 	g++ $(OBJDIR)/$(OBJECTS) -o build/gol
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
