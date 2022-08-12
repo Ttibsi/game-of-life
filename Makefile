@@ -11,10 +11,10 @@ run: build/gol
 	./build/gol
 
 build: $(OBJDIR)/$(OBJECTS)
-	g++ $(OBJDIR)/$(OBJECTS) -o build/gol -v
+	g++ $(OBJDIR)/$(OBJECTS) -o build/gol -Iinclude -Llib/lib-x86_64 -lglfw3
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
-	g++ -c -std=$(VERSION) $^ -o $@ -Wno-deprecated -Iinclude
+	g++ -c -std=$(VERSION) $^ -o $@ -Wno-deprecated
 
 .PHONY: clean
 clean:
