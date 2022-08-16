@@ -1,6 +1,7 @@
 #define GL_SILENCE_DEPRECATION
 
 #include "../include/GLFW/glfw3.h"
+#include "../include/apple.h"
 #include "../include/templates.h"
 
 #include <iostream>
@@ -24,9 +25,9 @@ const char *fragmentShaderSource =
     "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
     "}\0";
 
-void renderShaders() {
+unsigned int renderShaders() {
     // Vertex Shader
-    unsigned int vertexShader;
+    unsigned int vertexShader; // VBO
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
@@ -72,6 +73,21 @@ void renderShaders() {
     // deleted
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+
+    return vertexShader;
+}
+
+void vertexArrayObj(unsigned int VBO, Triangle2d my_tri) {
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(my_tri), &my_tri, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+                          (void *)0);
+    glEnableVertexAttribArray(0);
 }
 
 void renderContent(GLFWwindow *window) {
@@ -88,7 +104,8 @@ void renderContent(GLFWwindow *window) {
         glBufferData(GL_ARRAY_BUFFER, (6 * sizeof(float)), &tri_1,
                      GL_STATIC_DRAW);
 
-        renderShaders();
+        auto VBO = renderShaders();
+        vertexArrayObj(VBO, tri_1);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -121,6 +138,7 @@ int main(void) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // std::cout << glGetString(GL_VERSION) << '\n';
+    //  4.1 INTEL-18.7.4
 
     renderContent(window);
 
