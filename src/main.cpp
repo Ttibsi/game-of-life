@@ -88,6 +88,10 @@ void vertexArrayObj(unsigned int VBO, Triangle2d my_tri) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
                           (void *)0);
     glEnableVertexAttribArray(0);
+
+    glUseProgram(renderShaders());
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 void renderContent(GLFWwindow *window) {

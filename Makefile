@@ -1,4 +1,4 @@
-FILES := main.cpp
+FILES := test.cpp
 OBJDIR := build/objects
 OBJECTS := main.o
 SRCDIR := src
