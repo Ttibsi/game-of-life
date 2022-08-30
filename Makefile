@@ -1,4 +1,4 @@
-FILES := test.cpp
+FILES := main.cpp
 OBJDIR := build/objects
 OBJECTS := main.o
 SRCDIR := src
@@ -13,7 +13,7 @@ run: build/gol
 	./build/gol
 
 build: $(OBJDIR)/$(OBJECTS)
-	g++ $(OBJDIR)/$(OBJECTS) -o build/gol -Iinclude -Llib -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit
+	g++ $(OBJDIR)/$(OBJECTS) -o build/gol -Iinclude -Llib -lglfw3 -framework Cocoa -framework OpenGL -framework IOKit -lX11 -lpthread -lXrandr -lXi -ldl -Ibuild/include src/glad.c
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	g++ -c -std=$(VERSION) $^ -o $@ -Wno-deprecated
