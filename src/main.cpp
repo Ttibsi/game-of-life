@@ -6,12 +6,15 @@
 // clang-format on
 
 #include <iostream>
+#include <vector>
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+const float CELL_ROWS = 12.0f;
+const float CELL_COLS = 12.0f;
 
 struct VERTEX_OBJECTS {
     unsigned int VAO;
@@ -112,6 +115,91 @@ VERTEX_OBJECTS vertexData() {
     return ret;
 }
 
+float square[] = {
+    // first triangle
+    0.5f, 0.5f, 0.0f,  // top right
+    0.5f, -0.5f, 0.0f, // bottom right
+    -0.5f, 0.5f, 0.0f, // top left
+    // second triangle
+    0.5f, -0.5f, 0.0f,  // bottom right
+    -0.5f, -0.5f, 0.0f, // bottom left
+    -0.5f, 0.5f, 0.0f   // top left
+};
+
+struct Cell {
+    // This is the coordinates
+    int drawable;
+    int x_cord;
+    int y_cord;
+};
+
+// makeVao initializes and returns a vertex array from the points provided.
+int makeVAO(float points[]) {
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(&points), points, GL_STATIC_DRAW);
+
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+                          (void *)0);
+
+    return VAO;
+}
+
+Cell makeCell(int x, int y) {
+    auto my_square = square;
+
+    for (int i = 0; i < sizeof(my_square); i++) {
+        float position;
+        float size;
+
+        switch (i % 3) {
+        case 0:;
+            size = 1.0f / CELL_COLS;
+            position = size * x;
+
+        case 1:
+            size = 1.0f / CELL_ROWS;
+            position = size * y;
+        default:
+            continue;
+        }
+
+        if (my_square[i] < 0) {
+            my_square[i] = (position * 2) - 1;
+        } else {
+            my_square[i] = ((position + size) * 2) - 1;
+        }
+    }
+
+    Cell ret = {makeVAO(my_square), x, y};
+    return ret;
+}
+
+std::vector<std::vector<Cell>> makeCells() {
+    std::vector<std::vector<Cell>> cells;
+
+    int x_count = 0;
+    int y_count = 0;
+
+    for (std::vector<Cell> i : cells) {
+        x_count += 1;
+
+        for (Cell j : i) {
+            y_count += 1;
+
+            Cell new_cell = makeCell(x_count, y_count);
+            cells[x_count][y_count] = new_cell;
+        }
+    }
+
+    return cells;
+}
+
 int main() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -136,6 +224,7 @@ int main() {
 
     int shaderProgram = shaders();
     VERTEX_OBJECTS vo = vertexData();
+    auto cells = makeCells();
 
     // Render Loop
     while (!glfwWindowShouldClose(window)) {
@@ -148,11 +237,11 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
-        glBindVertexArray(vo.VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vo.EBO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        // glUseProgram(shaderProgram);
+        // glBindVertexArray(vo.VAO);
+        // glDrawArrays(GL_TRIANGLES, 0, 3);
+        // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vo.EBO);
+        // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
