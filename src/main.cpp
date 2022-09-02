@@ -5,7 +5,9 @@
 #include <GLFW/glfw3.h>
 // clang-format on
 
+#include <charconv>
 #include <iostream>
+#include <string>
 #include <vector>
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
@@ -131,6 +133,17 @@ struct Cell {
     int drawable;
     int x_cord;
     int y_cord;
+
+    void draw() {
+        glBindVertexArray(drawable);
+        glDrawArrays(GL_TRIANGLES, 0, (sizeof(square) / 3));
+    }
+
+    friend std::ostream &operator<<(std::ostream &os, const Cell &c) {
+        os << "drawable: " << c.drawable << "\nx_cord: " << c.x_cord
+           << "\ny_cord: " << c.y_cord << "\n";
+        return os;
+    }
 };
 
 // makeVao initializes and returns a vertex array from the points provided.
@@ -193,6 +206,7 @@ std::vector<std::vector<Cell>> makeCells() {
             y_count += 1;
 
             Cell new_cell = makeCell(x_count, y_count);
+            std::cout << new_cell;
             cells[x_count][y_count] = new_cell;
         }
     }
@@ -242,6 +256,12 @@ int main() {
         // glDrawArrays(GL_TRIANGLES, 0, 3);
         // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vo.EBO);
         // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        for (std::vector<Cell> row : cells) {
+            for (Cell c : row) {
+                c.draw();
+            }
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
