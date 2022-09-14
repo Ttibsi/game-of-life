@@ -1,5 +1,5 @@
 #include <iostream>
 
-int main() {
-    std::cout << "Hello world\n";
-}
+int add(int x, int y);
+
+int main() { std::cout << add(1, 1); }
