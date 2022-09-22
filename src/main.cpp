@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <utility>
 
 #include "../include/argparse/argparse.hpp"
 #include "game.hpp"
@@ -22,5 +23,6 @@ int main(int argc, char *argv[]) {
     int size = program.get<int>("--size");
     int iter = program.get<int>("--iteration");
 
-    std::cout << main_game(size, iter);
+    std::pair<int, int> values = main_game(size, iter);
+    std::cout << values.first << " " << values.second; 
 }

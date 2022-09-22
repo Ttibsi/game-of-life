@@ -19,7 +19,7 @@ testenv:
 
 generate:
 	@echo "[Running CMake]"
-	docker exec my_env cmake -S /game-of-life/ -B build/
+	docker exec my_env cmake -DRUN_TESTS=OFF -S /game-of-life/ -B build/
 
 create: generate
 	@echo "[Running generated Makefile]"
