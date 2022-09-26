@@ -1,5 +1,4 @@
-#include <utility>
+#include "board.hpp"
 
-std::pair<int, int> main_game(int size, int iter) {
-    return {size, iter};
+void main_game(int size, int iter) {
 }

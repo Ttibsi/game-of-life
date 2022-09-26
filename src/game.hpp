@@ -1,5 +1,8 @@
-#pragma once
+#ifndef GAME_H
+#define GAME_H
 
-#include <utility>
+#include "board.hpp"
 
-std::pair<int, int> main_game(int size, int iter); 
+void main_game(int size, int iter); 
+
+#endif
