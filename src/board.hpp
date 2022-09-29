@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include <string>
+#include <vector>
 
 struct Point {
     int x_cord;
