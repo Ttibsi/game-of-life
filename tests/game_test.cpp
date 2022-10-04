@@ -4,7 +4,16 @@
 #include "../src/board.hpp"
 #include "gtest/gtest.h"
 
+board_t populate_board(board_t b); 
 board_t construct_board(int size); 
+
+TEST(game, populateBoard) { 
+    board_t b = populate_board(construct_board(3));
+    EXPECT_EQ(b[2].toggle, true);
+    EXPECT_EQ(b[6].toggle, true);
+    EXPECT_EQ(b[5].toggle, false);
+}
+
 TEST(game, constructBoard) { 
     board_t b = construct_board(3);
     board_t test_val;
