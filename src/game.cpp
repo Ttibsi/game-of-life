@@ -2,6 +2,77 @@
 
 #include <iostream>
 
+void print_board(board_t b, int size); 
+
+int check_neighbors(board_t board, Point cell) {
+    int living_neighbors = 0;
+
+    // 8 neighbors
+    for (Point i : board) {
+        if (i == cell) { continue; }
+
+        if (i.x_cord == cell.x_cord - 1 &&
+            i.y_cord == cell.y_cord - 1 && 
+            i.toggle == true) {
+            living_neighbors++;
+        }
+
+        if (i.x_cord == cell.x_cord &&
+            i.y_cord == cell.y_cord - 1 && 
+            i.toggle == true) {
+            living_neighbors++;
+        }
+
+        if (i.x_cord == cell.x_cord + 1 &&
+            i.y_cord == cell.y_cord - 1 &&
+            i.toggle == true ) {
+            living_neighbors++;
+        }
+
+        if (i.x_cord == cell.x_cord - 1 &&
+            i.y_cord == cell.y_cord &&
+            i.toggle == true) {
+            living_neighbors++;
+        }
+
+        if (i.x_cord == cell.x_cord + 1 &&
+            i.y_cord == cell.y_cord &&
+            i.toggle == true) {
+            living_neighbors++;
+        }
+
+        if (i.x_cord == cell.x_cord + 1 &&
+            i.y_cord == cell.y_cord - 1 &&
+            i.toggle == true) {
+            living_neighbors++;
+        }
+
+        if (i.x_cord == cell.x_cord + 1 &&
+            i.y_cord == cell.y_cord &&
+            i.toggle == true) {
+            living_neighbors++;
+        }
+
+        if (i.x_cord == cell.x_cord + 1 &&
+            i.y_cord == cell.y_cord + 1 &&
+            i.toggle == true) {
+            living_neighbors++;
+        }
+    }
+
+    return living_neighbors;
+
+}
+
+board_t increment_board_state(board_t board) {
+    for (Point &cell : board) {
+        int live_adj = check_neighbors(board, cell);
+
+    }
+
+    return board;
+}
+
 board_t populate_board(board_t b) {
     int places_to_fill[5] = {2, 4, 6, 8};
     for (int i : places_to_fill) { b[i].toggle = true; }
