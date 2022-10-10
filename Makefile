@@ -19,7 +19,7 @@ testenv:
 
 generate:
 	@echo "[Running CMake]"
-	docker exec my_env cmake -S /game-of-life/ -B build/
+	docker exec my_env cmake -DRUN_TESTS=OFF -S /game-of-life/ -B build/
 
 create: generate
 	@echo "[Running generated Makefile]"
@@ -28,7 +28,7 @@ create: generate
 run: create
 	docker exec my_env ./build/src/gol
 
-test:
+test: docker-clean testenv
 	docker exec my_env cmake -DRUN_TESTS=ON -S /game-of-life/ -B build/
 	docker exec --workdir="/game-of-life/build/tests/" my_env make
 	docker exec my_env ./build/tests/test

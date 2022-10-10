@@ -11,7 +11,7 @@ FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
 
 add_executable(test
-    main_test.cpp
+    game_test.cpp
 )
 
 target_link_libraries(test
