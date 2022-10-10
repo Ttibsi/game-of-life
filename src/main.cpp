@@ -23,6 +23,5 @@ int main(int argc, char *argv[]) {
     int size = program.get<int>("--size");
     int iter = program.get<int>("--iteration");
 
-    std::pair<int, int> values = main_game(size, iter);
-    std::cout << values.first << " " << values.second; 
+    main_game(size, iter);
 }
