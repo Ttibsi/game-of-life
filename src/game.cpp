@@ -8,6 +8,7 @@ int check_neighbors(board_t board, Point cell) {
     int living_neighbors = 0;
 
     // 8 neighbors
+    // TODO: Could this logic be handled better? Switch case seems wrong here
     for (Point i : board) {
         if (i == cell) { continue; }
 
@@ -61,13 +62,23 @@ int check_neighbors(board_t board, Point cell) {
     }
 
     return living_neighbors;
-
 }
 
 board_t increment_board_state(board_t board) {
     for (Point &cell : board) {
         int live_adj = check_neighbors(board, cell);
 
+        if (cell.toggle == true) {
+            // Any live cell with two or three live neighbours survives
+            // All other live cells die in the next generation. 
+            // Similarly, all other dead cells stay dead.
+            if (!(live_adj == 2 || live_adj == 3)) {
+                cell.toggle = false;
+            } else { cell.toggle = true; }
+        } else if (cell.toggle == false) {
+            //Any dead cell with three live neighbours becomes a live cell
+            if (live_adj == 3) { cell.toggle = true; }
+        }
     }
 
     return board;
