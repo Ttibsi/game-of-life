@@ -2,7 +2,8 @@
 
 #include <iostream>
 
-void print_board(board_t b, int size); 
+void print_board(board_t b, int size);
+board_t populate_board(board_t b);
 
 int check_neighbors(board_t board, Point cell) {
     int living_neighbors = 0;
@@ -10,52 +11,46 @@ int check_neighbors(board_t board, Point cell) {
     // 8 neighbors
     // TODO: Could this logic be handled better? Switch case seems wrong here
     for (Point i : board) {
-        if (i == cell) { continue; }
+        if (i.x_cord == cell.x_cord && i.y_cord == cell.y_cord) {
+            continue;
+        }
 
-        if (i.x_cord == cell.x_cord - 1 &&
-            i.y_cord == cell.y_cord - 1 && 
+        if (i.x_cord == cell.x_cord - 1 && i.y_cord == cell.y_cord - 1 &&
             i.toggle == true) {
             living_neighbors++;
         }
 
-        if (i.x_cord == cell.x_cord &&
-            i.y_cord == cell.y_cord - 1 && 
+        if (i.x_cord == cell.x_cord && i.y_cord == cell.y_cord - 1 &&
             i.toggle == true) {
             living_neighbors++;
         }
 
-        if (i.x_cord == cell.x_cord + 1 &&
-            i.y_cord == cell.y_cord - 1 &&
-            i.toggle == true ) {
-            living_neighbors++;
-        }
-
-        if (i.x_cord == cell.x_cord - 1 &&
-            i.y_cord == cell.y_cord &&
+        if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord - 1 &&
             i.toggle == true) {
             living_neighbors++;
         }
 
-        if (i.x_cord == cell.x_cord + 1 &&
-            i.y_cord == cell.y_cord &&
+        if (i.x_cord == cell.x_cord - 1 && i.y_cord == cell.y_cord &&
             i.toggle == true) {
             living_neighbors++;
         }
 
-        if (i.x_cord == cell.x_cord + 1 &&
-            i.y_cord == cell.y_cord - 1 &&
+        if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord &&
             i.toggle == true) {
             living_neighbors++;
         }
 
-        if (i.x_cord == cell.x_cord + 1 &&
-            i.y_cord == cell.y_cord &&
+        if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord - 1 &&
             i.toggle == true) {
             living_neighbors++;
         }
 
-        if (i.x_cord == cell.x_cord + 1 &&
-            i.y_cord == cell.y_cord + 1 &&
+        if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord &&
+            i.toggle == true) {
+            living_neighbors++;
+        }
+
+        if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord + 1 &&
             i.toggle == true) {
             living_neighbors++;
         }
@@ -65,19 +60,28 @@ int check_neighbors(board_t board, Point cell) {
 }
 
 board_t increment_board_state(board_t board) {
-    for (Point &cell : board) {
-        int live_adj = check_neighbors(board, cell);
+    board_t new_board;
 
-        if (cell.toggle == true) {
+    for (int i = 0; i < board.size(); i++) {
+        int live_adj = check_neighbors(board, board[i]);
+
+        if (board[i].toggle == true) {
             // Any live cell with two or three live neighbours survives
-            // All other live cells die in the next generation. 
-            // Similarly, all other dead cells stay dead.
+            // All other live in_state[i]s die in the next generation.
+            // Similarly, all other dead in_state[i]s stay dead.
             if (!(live_adj == 2 || live_adj == 3)) {
-                cell.toggle = false;
-            } else { cell.toggle = true; }
-        } else if (cell.toggle == false) {
-            //Any dead cell with three live neighbours becomes a live cell
-            if (live_adj == 3) { cell.toggle = true; }
+                new_board[i] = board[i];
+                new_board[i].toggle = false;
+                // } else { board[i].toggle = true; }
+            } else {
+                new_board[i] = board[i];
+            }
+        } else {
+            // Any dead cell with three live neighbours becomes a live cell
+            if (live_adj == 3) {
+                new_board[i] = board[i];
+                new_board[i].toggle = true;
+            }
         }
     }
 
@@ -86,7 +90,9 @@ board_t increment_board_state(board_t board) {
 
 board_t populate_board(board_t b) {
     int places_to_fill[5] = {2, 4, 6, 8};
-    for (int i : places_to_fill) { b[i].toggle = true; }
+    for (int i : places_to_fill) {
+        b[i].toggle = true;
+    }
     return b;
 }
 
@@ -98,7 +104,9 @@ void print_board(board_t b, int size) {
             std::cout << " . ";
         }
 
-        if (pair.y_cord == (size - 1)) { std::cout << '\n'; }
+        if (pair.y_cord == (size - 1)) {
+            std::cout << '\n';
+        }
     }
 }
 
@@ -118,5 +126,6 @@ board_t construct_board(int size) {
 void main_game(int size, int iter) {
     // board_t my_Board = construct_board(size);
     board_t my_Board = populate_board(construct_board(size));
+    board_t board_2 = construct_board(size);
     print_board(my_Board, size);
 }

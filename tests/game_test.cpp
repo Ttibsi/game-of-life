@@ -1,23 +1,24 @@
 #include <iostream>
 #include <vector>
 
-#include "../src/game.cpp"
 #include "../src/board.hpp"
+#include "../src/game.cpp"
 #include "gtest/gtest.h"
 
-int check_neighbors(board_t board, Point cell); 
-board_t increment_board_state(board_t board); 
-board_t populate_board(board_t b); 
-board_t construct_board(int size); 
+int check_neighbors(board_t board, Point cell);
+board_t increment_board_state(board_t board);
+board_t populate_board(board_t b);
+board_t construct_board(int size);
+void print_board(board_t b, int size);
 
-TEST(gameDisplay, populateBoard) { 
+TEST(gameDisplay, populateBoard) {
     board_t b = populate_board(construct_board(3));
     EXPECT_EQ(b[2].toggle, true);
     EXPECT_EQ(b[6].toggle, true);
     EXPECT_EQ(b[5].toggle, false);
 }
 
-TEST(gameDisplay, constructBoard) { 
+TEST(gameDisplay, constructBoard) {
     board_t b = construct_board(3);
     board_t test_val;
 
@@ -37,8 +38,8 @@ TEST(gameLogic, checkNeighbors) {
     test_board[4].toggle = true;
     test_board[0].toggle = true;
     EXPECT_EQ(check_neighbors(test_board, test_board[4]), 1);
-    test_board[3].toggle = true;
     test_board[1].toggle = true;
+    test_board[3].toggle = true;
     EXPECT_EQ(check_neighbors(test_board, test_board[4]), 3);
 }
 
@@ -47,7 +48,10 @@ TEST(gameLogic, incrementBoard) {
     b[2].toggle = true;
     b[4].toggle = true;
     b[8].toggle = true;
+    print_board(b, 3);
     board_t c = increment_board_state(b);
+    print_board(b, 3);
+
     EXPECT_EQ(c[0].toggle, false);
     EXPECT_EQ(c[1].toggle, false);
     EXPECT_EQ(c[2].toggle, false);

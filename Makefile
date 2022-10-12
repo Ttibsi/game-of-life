@@ -28,7 +28,7 @@ create: generate
 run: docker-clean testenv create
 	docker exec my_env ./build/src/gol
 
-test: docker-clean testenv
+test: testenv
 	docker exec my_env cmake -DRUN_TESTS=ON -S /game-of-life/ -B build/
 	docker exec --workdir="/game-of-life/build/tests/" my_env make
 	docker exec my_env ./build/tests/test
