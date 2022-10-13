@@ -25,7 +25,7 @@ create: generate
 	@echo "[Running generated Makefile]"
 	docker exec --workdir="/game-of-life/build/" my_env make
 
-run: docker-clean testenv create
+run: testenv create
 	docker exec my_env ./build/src/gol
 
 test: testenv

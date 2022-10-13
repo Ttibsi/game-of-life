@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
         .scan<'i', int>()
         .help("Size of the board to calculate");
     program.add_argument("-i", "--iteration")
-        .default_value(0)
+        .default_value(1)
         .scan<'i', int>()
         .help("Iteration of the board state to output");
 
