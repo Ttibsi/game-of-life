@@ -1,15 +1,17 @@
 #include "board.hpp"
 
+#include <cmath>
 #include <iostream>
 
+board_t construct_board(int size);
 void print_board(board_t b, int size);
 board_t populate_board(board_t b);
 
 int check_neighbors(board_t board, Point cell) {
     int living_neighbors = 0;
 
+    // TODO - check logic
     // 8 neighbors
-    // TODO: Could this logic be handled better? Switch case seems wrong here
     for (Point i : board) {
         if (i.x_cord == cell.x_cord && i.y_cord == cell.y_cord) {
             continue;
@@ -60,36 +62,37 @@ int check_neighbors(board_t board, Point cell) {
 }
 
 board_t increment_board_state(board_t board) {
-    board_t new_board;
+    board_t new_board = construct_board(std::sqrt(board.size()));
 
-    for (int i = 0; i < board.size(); i++) {
+    for (long unsigned int i = 0; i < board.size(); i++) {
         int live_adj = check_neighbors(board, board[i]);
+        // std::cout << std::boolalpha;
+        // std::cout << "{ (" << board[i].x_cord << ", " << board[i].y_cord << ") " << board[i].toggle << " " << live_adj << "}\n";
 
         if (board[i].toggle == true) {
             // Any live cell with two or three live neighbours survives
             // All other live in_state[i]s die in the next generation.
             // Similarly, all other dead in_state[i]s stay dead.
             if (!(live_adj == 2 || live_adj == 3)) {
-                new_board[i] = board[i];
                 new_board[i].toggle = false;
-                // } else { board[i].toggle = true; }
             } else {
-                new_board[i] = board[i];
+                new_board[i].toggle = true;
             }
         } else {
             // Any dead cell with three live neighbours becomes a live cell
             if (live_adj == 3) {
-                new_board[i] = board[i];
                 new_board[i].toggle = true;
+            } else {
+                new_board[i].toggle = false;
             }
         }
     }
 
-    return board;
+    return new_board;
 }
 
 board_t populate_board(board_t b) {
-    int places_to_fill[5] = {2, 4, 6, 8};
+    int places_to_fill[5] = {2, 8, 11, 12, 13};
     for (int i : places_to_fill) {
         b[i].toggle = true;
     }
@@ -126,6 +129,11 @@ board_t construct_board(int size) {
 void main_game(int size, int iter) {
     // board_t my_Board = construct_board(size);
     board_t my_Board = populate_board(construct_board(size));
-    board_t board_2 = construct_board(size);
     print_board(my_Board, size);
+
+    for (int i = 0; i < iter; i++) {
+        std::cout << "iter = " << iter << "\n";
+        my_Board = increment_board_state(my_Board);
+        print_board(my_Board, size);
+    }
 }
