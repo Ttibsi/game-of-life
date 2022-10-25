@@ -25,6 +25,11 @@ create: generate
 	@echo "[Running generated Makefile]"
 	docker exec --workdir="/game-of-life/build/" my_env make
 
+local-build:
+	@echo "[Building to build/]"
+	g++ -std=c++17 -g src/*.cpp -o temp.o 
+	./temp.o
+
 run: testenv create
 	docker exec my_env ./build/src/gol
 
