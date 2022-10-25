@@ -7,13 +7,13 @@
 struct Point {
     int x_cord;
     int y_cord;
-    bool toggle;
+    bool live;
 };
 
 inline std::ostream &operator<<(std::ostream &os, const Point &c) {
     os << std::string("{") << std::to_string(c.x_cord) << std::string(", ")
        << std::to_string(c.y_cord) << std::string(" : ")
-       << std::to_string(c.toggle) << std::string("}");
+       << std::to_string(c.live) << std::string("}");
 
     return os;
 }

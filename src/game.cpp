@@ -18,42 +18,42 @@ int check_neighbors(board_t board, Point cell) {
         }
 
         if (i.x_cord == cell.x_cord - 1 && i.y_cord == cell.y_cord - 1 &&
-            i.toggle == true) {
+            i.live == true) {
             living_neighbors++;
         }
 
         if (i.x_cord == cell.x_cord && i.y_cord == cell.y_cord - 1 &&
-            i.toggle == true) {
+            i.live == true) {
             living_neighbors++;
         }
 
         if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord - 1 &&
-            i.toggle == true) {
+            i.live == true) {
             living_neighbors++;
         }
 
         if (i.x_cord == cell.x_cord - 1 && i.y_cord == cell.y_cord &&
-            i.toggle == true) {
+            i.live == true) {
             living_neighbors++;
         }
 
         if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord &&
-            i.toggle == true) {
+            i.live == true) {
             living_neighbors++;
         }
 
         if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord - 1 &&
-            i.toggle == true) {
+            i.live == true) {
             living_neighbors++;
         }
 
         if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord &&
-            i.toggle == true) {
+            i.live == true) {
             living_neighbors++;
         }
 
         if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord + 1 &&
-            i.toggle == true) {
+            i.live == true) {
             living_neighbors++;
         }
     }
@@ -67,23 +67,23 @@ board_t increment_board_state(board_t board) {
     for (long unsigned int i = 0; i < board.size(); i++) {
         int live_adj = check_neighbors(board, board[i]);
         // std::cout << std::boolalpha;
-        // std::cout << "{ (" << board[i].x_cord << ", " << board[i].y_cord << ") " << board[i].toggle << " " << live_adj << "}\n";
+        // std::cout << "{ (" << board[i].x_cord << ", " << board[i].y_cord << ") " << board[i].live << " " << live_adj << "}\n";
 
-        if (board[i].toggle == true) {
+        if (board[i].live == true) {
             // Any live cell with two or three live neighbours survives
             // All other live in_state[i]s die in the next generation.
             // Similarly, all other dead in_state[i]s stay dead.
             if (!(live_adj == 2 || live_adj == 3)) {
-                new_board[i].toggle = false;
+                new_board[i].live = false;
             } else {
-                new_board[i].toggle = true;
+                new_board[i].live = true;
             }
         } else {
             // Any dead cell with three live neighbours becomes a live cell
             if (live_adj == 3) {
-                new_board[i].toggle = true;
+                new_board[i].live = true;
             } else {
-                new_board[i].toggle = false;
+                new_board[i].live = false;
             }
         }
     }
@@ -94,14 +94,14 @@ board_t increment_board_state(board_t board) {
 board_t populate_board(board_t b) {
     int places_to_fill[5] = {2, 8, 11, 12, 13};
     for (int i : places_to_fill) {
-        b[i].toggle = true;
+        b[i].live = true;
     }
     return b;
 }
 
 void print_board(board_t b, int size) {
     for (auto &pair : b) {
-        if (pair.toggle == true) {
+        if (pair.live == true) {
             std::cout << " # ";
         } else {
             std::cout << " . ";

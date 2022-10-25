@@ -13,9 +13,9 @@ void print_board(board_t b, int size);
 
 TEST(gameDisplay, populateBoard) {
     board_t b = populate_board(construct_board(3));
-    EXPECT_EQ(b[2].toggle, true);
-    EXPECT_EQ(b[6].toggle, true);
-    EXPECT_EQ(b[5].toggle, false);
+    EXPECT_EQ(b[2].live, true);
+    EXPECT_EQ(b[6].live, true);
+    EXPECT_EQ(b[5].live, false);
 }
 
 TEST(gameDisplay, constructBoard) {
@@ -35,30 +35,30 @@ TEST(gameDisplay, constructBoard) {
 TEST(gameLogic, checkNeighbors) {
     board_t test_board = construct_board(3);
 
-    test_board[4].toggle = true;
-    test_board[0].toggle = true;
+    test_board[4].live = true;
+    test_board[0].live = true;
     EXPECT_EQ(check_neighbors(test_board, test_board[4]), 1);
-    test_board[1].toggle = true;
-    test_board[3].toggle = true;
+    test_board[1].live = true;
+    test_board[3].live = true;
     EXPECT_EQ(check_neighbors(test_board, test_board[4]), 3);
 }
 
 TEST(gameLogic, incrementBoard) {
     board_t b = construct_board(3);
-    b[2].toggle = true;
-    b[4].toggle = true;
-    b[8].toggle = true;
+    b[2].live = true;
+    b[4].live = true;
+    b[8].live = true;
     print_board(b, 3);
     board_t c = increment_board_state(b);
     print_board(b, 3);
 
-    EXPECT_EQ(c[0].toggle, false);
-    EXPECT_EQ(c[1].toggle, false);
-    EXPECT_EQ(c[2].toggle, false);
-    EXPECT_EQ(c[3].toggle, false);
-    EXPECT_EQ(c[4].toggle, true);
-    EXPECT_EQ(c[5].toggle, true);
-    EXPECT_EQ(c[6].toggle, false);
-    EXPECT_EQ(c[7].toggle, false);
-    EXPECT_EQ(c[8].toggle, false);
+    EXPECT_EQ(c[0].live, false);
+    EXPECT_EQ(c[1].live, false);
+    EXPECT_EQ(c[2].live, false);
+    EXPECT_EQ(c[3].live, false);
+    EXPECT_EQ(c[4].live, true);
+    EXPECT_EQ(c[5].live, true);
+    EXPECT_EQ(c[6].live, false);
+    EXPECT_EQ(c[7].live, false);
+    EXPECT_EQ(c[8].live, false);
 }
