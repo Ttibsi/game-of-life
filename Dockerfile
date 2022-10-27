@@ -4,6 +4,7 @@ FROM ubuntu:jammy
 RUN apt-get update && apt-get upgrade -y && \
 apt-get install --no-install-recommends \
 cmake \
+gdb \
 git \
 googletest \
 g++ \
