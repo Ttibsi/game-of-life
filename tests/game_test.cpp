@@ -12,7 +12,7 @@ board_t construct_board(int size);
 void print_board(board_t b, int size);
 
 TEST(gameDisplay, populateBoard) {
-    board_t b = populate_board(construct_board(3));
+    board_t b = populate_board(construct_board(3), {2, 6});
     EXPECT_EQ(b[2].live, true);
     EXPECT_EQ(b[6].live, true);
     EXPECT_EQ(b[5].live, false);
@@ -48,9 +48,7 @@ TEST(gameLogic, incrementBoard) {
     b[2].live = true;
     b[4].live = true;
     b[8].live = true;
-    print_board(b, 3);
     board_t c = increment_board_state(b);
-    print_board(b, 3);
 
     EXPECT_EQ(c[0].live, false);
     EXPECT_EQ(c[1].live, false);
