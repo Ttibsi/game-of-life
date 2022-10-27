@@ -77,8 +77,6 @@ board_t increment_board_state(board_t board) {
 }
 
 board_t populate_board(board_t b, std::vector<int> places_to_fill) {
-    // int places_to_fill[5] = {2, 8, 11, 12, 13}; // len = 5
-    // int places_to_fill[5] = {2, 15, 25, 26, 27}; // len = 12
     for (int i : places_to_fill) {
         b[i].live = true;
     }
@@ -113,7 +111,6 @@ board_t construct_board(int size) {
 }
 
 void main_game(int size, int iter) {
-    // board_t my_Board = construct_board(size);
     board_t my_Board =
         populate_board(construct_board(size), {2, 8, 11, 12, 13}); // len 5
 

@@ -5,6 +5,7 @@ all:
 	@echo "create: run generated makefile"
 	@echo "local-build: build tool using g++ locally"
 	@echo "run: execute source build"
+	@echo "gdb: Start setting up gdb"
 	@echo "test: build and execute tests"
 	@echo "new-env: launch new tty environment"
 	@echo "env: launch exciting tty environment"
@@ -38,8 +39,8 @@ gdb:
 	@echo "[Running GDB]"
 	docker exec my_env cmake -DCMAKE_BUILD_TYPE=Debug -DRUN_TESTS=OFF -S /game-of-life/ -B build/
 	docker exec --workdir="/game-of-life/build/" my_env make
-	echo "enter env and run gdb"
-	echo "https://stackoverflow.com/a/3719031"
+	@echo "enter env and run gdb"
+	@echo "https://stackoverflow.com/a/3719031"
 
 test: testenv
 	docker exec my_env cmake -DRUN_TESTS=ON -S /game-of-life/ -B build/
