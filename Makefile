@@ -3,6 +3,7 @@ all:
 	@echo "testenv: create env"
 	@echo "generate: run cmake"
 	@echo "create: run generated makefile"
+	@echo "local-build: build tool using g++ locally"
 	@echo "run: execute source build"
 	@echo "test: build and execute tests"
 	@echo "new-env: launch new tty environment"
@@ -27,7 +28,7 @@ create: generate
 
 local-build:
 	@echo "[Building to build/]"
-	g++ -std=c++17 -g src/*.cpp -o temp.o 
+	g++ -std=c++17 -g src/*.cpp -o temp.o
 	./temp.o
 
 run: testenv create

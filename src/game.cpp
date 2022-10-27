@@ -1,7 +1,10 @@
 #include "board.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <utility>
+#include <vector>
 
 board_t construct_board(int size);
 void print_board(board_t b, int size);
@@ -10,51 +13,32 @@ board_t populate_board(board_t b);
 int check_neighbors(board_t board, Point cell) {
     int living_neighbors = 0;
 
-    // TODO - check logic
-    // 8 neighbors
-    for (Point i : board) {
-        if (i.x_cord == cell.x_cord && i.y_cord == cell.y_cord) {
-            continue;
-        }
+    // clang-format off
+    std::vector<std::pair<int, int>> relative_cords = {
+        std::make_pair(-1, -1),
+        std::make_pair(-1, 0),
+        std::make_pair(-1, 1),
+        std::make_pair(0, -1),
+        std::make_pair(0, +1),
+        std::make_pair(+1, -1),
+        std::make_pair(+1, 0),
+        std::make_pair(+1, +1),
+    };
+    // clang-format on
 
-        if (i.x_cord == cell.x_cord - 1 && i.y_cord == cell.y_cord - 1 &&
-            i.live == true) {
-            living_neighbors++;
-        }
+    for (std::pair<int, int> i : relative_cords) {
+        int x_val = i.first + cell.x_cord;
+        int y_val = i.second + cell.y_cord;
 
-        if (i.x_cord == cell.x_cord && i.y_cord == cell.y_cord - 1 &&
-            i.live == true) {
-            living_neighbors++;
-        }
+        Point temp = {x_val, y_val, false};
 
-        if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord - 1 &&
-            i.live == true) {
-            living_neighbors++;
-        }
+        auto found = std::find_if(board.begin(), board.end(),
+                                  [&](auto const &e) { return e == temp; });
 
-        if (i.x_cord == cell.x_cord - 1 && i.y_cord == cell.y_cord &&
-            i.live == true) {
-            living_neighbors++;
-        }
-
-        if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord &&
-            i.live == true) {
-            living_neighbors++;
-        }
-
-        if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord - 1 &&
-            i.live == true) {
-            living_neighbors++;
-        }
-
-        if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord &&
-            i.live == true) {
-            living_neighbors++;
-        }
-
-        if (i.x_cord == cell.x_cord + 1 && i.y_cord == cell.y_cord + 1 &&
-            i.live == true) {
-            living_neighbors++;
+        if (found != board.end()) {
+            if (found->live == true) {
+                living_neighbors++;
+            }
         }
     }
 
@@ -67,7 +51,8 @@ board_t increment_board_state(board_t board) {
     for (long unsigned int i = 0; i < board.size(); i++) {
         int live_adj = check_neighbors(board, board[i]);
         // std::cout << std::boolalpha;
-        // std::cout << "{ (" << board[i].x_cord << ", " << board[i].y_cord << ") " << board[i].live << " " << live_adj << "}\n";
+        // std::cout << "{ (" << board[i].x_cord << ", " << board[i].y_cord <<
+        // ") " << board[i].live << " " << live_adj << "}\n";
 
         if (board[i].live == true) {
             // Any live cell with two or three live neighbours survives
@@ -92,7 +77,8 @@ board_t increment_board_state(board_t board) {
 }
 
 board_t populate_board(board_t b) {
-    int places_to_fill[5] = {2, 8, 11, 12, 13};
+    // int places_to_fill[5] = {2, 8, 11, 12, 13}; // len = 5
+    int places_to_fill[5] = {2, 15, 25, 26, 27}; // len = 12
     for (int i : places_to_fill) {
         b[i].live = true;
     }

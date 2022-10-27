@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     argparse::ArgumentParser program("game-of-life", version);
 
     program.add_argument("-s", "--size")
-        .default_value(5)
+        .default_value(12)
         .scan<'i', int>()
         .help("Size of the board to calculate");
     program.add_argument("-i", "--iteration")
