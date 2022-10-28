@@ -9,6 +9,7 @@ git \
 googletest \
 g++ \
 libgtest-dev \
+libncurses5-dev \
 make \
 neovim \
 tree -y \

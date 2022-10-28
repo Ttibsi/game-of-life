@@ -1,8 +1,12 @@
 #include "board.hpp"
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <iostream>
+#include <term.h>
+#include <thread>
+#include <unistd.h>
 #include <utility>
 #include <vector>
 
@@ -76,6 +80,20 @@ board_t increment_board_state(board_t board) {
     return new_board;
 }
 
+void ClearScreen() {
+    // This only properly works within the docker container, not outside of it
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+    if (!cur_term) {
+        int result;
+        setupterm(NULL, STDOUT_FILENO, &result);
+        if (result <= 0)
+            return;
+    }
+
+    putp(tigetstr("clear"));
+}
+
 board_t populate_board(board_t b, std::vector<int> places_to_fill) {
     for (int i : places_to_fill) {
         b[i].live = true;
@@ -119,9 +137,12 @@ void main_game(int size, int iter) {
     //         {2, 15, 25, 26, 27}
     //     ); // len 12
 
+    ClearScreen();
+    std::cout << "iter = 0 (Starting layout)\n";
     print_board(my_Board, size);
 
     for (int i = 0; i < iter; i++) {
+        ClearScreen();
         std::cout << "iter = " << iter << "\n";
         my_Board = increment_board_state(my_Board);
         print_board(my_Board, size);

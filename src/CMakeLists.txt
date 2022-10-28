@@ -11,4 +11,6 @@ add_library( src_lib
     board.hpp
 )
 
+target_link_libraries(gol tinfo)
+
 target_include_directories(src_lib PUBLIC .)
