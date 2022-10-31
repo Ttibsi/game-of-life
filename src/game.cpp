@@ -1,3 +1,4 @@
+#include "../include/nlohmann/json.hpp"
 #include "board.hpp"
 
 #include <algorithm>
@@ -9,6 +10,8 @@
 #include <unistd.h>
 #include <utility>
 #include <vector>
+
+using json = nlohmann::json;
 
 board_t construct_board(int size);
 void print_board(board_t b, int size);
@@ -128,23 +131,33 @@ board_t construct_board(int size) {
     return board;
 }
 
-void main_game(int size, int iter) {
-    board_t my_Board =
-        populate_board(construct_board(size), {2, 8, 11, 12, 13}); // len 5
+// std::vector<int> get_populate_locations(int size, json coords) {
+//     std::vector<int> ret = {};
+//     std::cout << coords;
+//
+//     // for item in coords
+//     // (item[x_cord] * size) + item[y_cord]
+// }
+
+void main_game(int size, int iter, json config) {
+    std::cout << "main_game";
+    // std::vector<int> populate_list = get_populate_locations(size,
+    // config["coords"]); board_t my_Board =
+    // populate_board(construct_board(size), populate_list);
 
     // board_t my_Board = populate_board(
     //         construct_board(size),
     //         {2, 15, 25, 26, 27}
     //     ); // len 12
 
-    ClearScreen();
-    std::cout << "iter = 0 (Starting layout)\n";
-    print_board(my_Board, size);
-
-    for (int i = 0; i < iter; i++) {
-        ClearScreen();
-        std::cout << "iter = " << iter << "\n";
-        my_Board = increment_board_state(my_Board);
-        print_board(my_Board, size);
-    }
+    // ClearScreen();
+    // std::cout << "iter = 0 (Starting layout)\n";
+    // print_board(my_Board, size);
+    //
+    // for (int i = 0; i < iter; i++) {
+    //     ClearScreen();
+    //     std::cout << "iter = " << iter << "\n";
+    //     my_Board = increment_board_state(my_Board);
+    //     print_board(my_Board, size);
+    // }
 }

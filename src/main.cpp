@@ -32,13 +32,16 @@ int main(int argc, char *argv[]) {
     json config = json::parse(jsonstream);
     std::cout << "json size: " << config.size() << "\n";
 
-    // if (config.size() == 0 ) {
-    //     int size = program.get<int>("--size");
-    //     int iter = program.get<int>("--iteration");
-    // } else {
-    //     int size = config[size];
-    //     int iter = config[iter];
-    // }
-    //
-    // main_game(size, iter, config);
+    int size = 0;
+    int iter = 0;
+
+    if (config.size() == 0) {
+        size = program.get<int>("--size");
+        iter = program.get<int>("--iteration");
+    } else {
+        size = config["size"];
+        iter = config["iter"];
+    }
+
+    main_game(size, iter, config);
 }
