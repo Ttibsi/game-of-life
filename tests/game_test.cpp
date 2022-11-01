@@ -5,11 +5,14 @@
 #include "../src/game.cpp"
 #include "gtest/gtest.h"
 
+#include "../include/nlohmann/json.hpp"
+using json = nlohmann::json;
+
 int check_neighbors(board_t board, Point cell);
 board_t increment_board_state(board_t board);
 board_t populate_board(board_t b);
 board_t construct_board(int size);
-void print_board(board_t b, int size);
+std::vector<int> get_populate_locations(int size, json coords);
 
 TEST(gameDisplay, populateBoard) {
     board_t b = populate_board(construct_board(3), {2, 6});
@@ -30,6 +33,27 @@ TEST(gameDisplay, constructBoard) {
     }
 
     EXPECT_EQ(b, test_val);
+}
+
+TEST(gameDisplay, populateLocations) {
+    int size = 3;
+    json coords = R"([
+        {
+            "x_cord": 0,
+            "y_cord": 1
+        },{
+            "x_cord": 0,
+            "y_cord": 2
+        }, {
+            "x_cord": 2,
+            "y_cord": 0
+        }])"_json;
+    std::vector<int> ret = {};
+
+    ret = get_populate_locations(size, coords);
+    EXPECT_EQ(ret[0], 1);
+    EXPECT_EQ(ret[1], 2);
+    EXPECT_EQ(ret[2], 6);
 }
 
 TEST(gameLogic, checkNeighbors) {
