@@ -34,10 +34,7 @@ local-build:
 	./temp.o
 
 run: testenv create
-	docker exec my_env ./build/src/gol
-
-run-json: testenv create
-	docker exec my_env ./build/src/gol --json src/ex.json
+	docker exec my_env ./build/src/gol --json src/config.json
 
 gdb:
 	@echo "[Running GDB]"

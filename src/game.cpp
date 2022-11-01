@@ -129,11 +129,6 @@ void main_game(int size, int iter, json config) {
         get_populate_locations(size, config["coords"]);
     board_t my_Board = populate_board(construct_board(size), populate_list);
 
-    // board_t my_Board = populate_board(
-    //         construct_board(size),
-    //         {2, 15, 25, 26, 27}
-    //     ); // len 12
-
     std::cout << "iter = 0 (Starting layout)\n";
     print_board(my_Board, size);
 

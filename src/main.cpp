@@ -24,7 +24,6 @@ int main(int argc, char *argv[]) {
         .help("Iteration of the board state to output");
     program.add_argument("-j", "--json")
         .default_value("")
-        // .scan<'i', std::string>()
         .help("Pass in a JSON config file");
 
     program.parse_args(argc, argv);
