@@ -132,8 +132,8 @@ void main_game(int size, int iter, json config) {
     std::cout << "iter = 0 (Starting layout)\n";
     print_board(my_Board, size);
 
-    for (int i = 0; i < iter; i++) {
-        std::cout << "\niter = " << iter << "\n";
+    for (int i = 1; i <= iter; i++) {
+        std::cout << "\niter = " << i << "\n";
         my_Board = increment_board_state(my_Board);
         print_board(my_Board, size);
     }
