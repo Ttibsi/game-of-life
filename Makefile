@@ -5,6 +5,7 @@ all:
 	@echo "create: run generated makefile"
 	@echo "local-build: build tool using g++ locally"
 	@echo "run: execute source build"
+	@echo "run-json: execute source build with src/ex.json"
 	@echo "gdb: Start setting up gdb"
 	@echo "test: build and execute tests"
 	@echo "new-env: launch new tty environment"
@@ -15,7 +16,6 @@ all:
 
 testenv:
 	@echo "[Create Env]"
-	open -a docker
 	docker build -f Dockerfile -t env .
 	docker run -td --name="my_env" env
 
@@ -33,7 +33,7 @@ local-build:
 	./temp.o
 
 run: testenv create
-	docker exec my_env ./build/src/gol
+	docker exec my_env ./build/src/gol --json src/config.json
 
 gdb:
 	@echo "[Running GDB]"

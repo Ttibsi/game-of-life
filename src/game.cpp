@@ -1,10 +1,13 @@
 #include "board.hpp"
+#include <nlohmann/json.hpp>
 
 #include <algorithm>
 #include <cmath>
 #include <iostream>
 #include <utility>
 #include <vector>
+
+using json = nlohmann::json;
 
 board_t construct_board(int size);
 void print_board(board_t b, int size);
@@ -110,19 +113,27 @@ board_t construct_board(int size) {
     return board;
 }
 
-void main_game(int size, int iter) {
-    board_t my_Board =
-        populate_board(construct_board(size), {2, 8, 11, 12, 13}); // len 5
+std::vector<int> get_populate_locations(int size, json coords) {
+    std::vector<int> ret = {};
 
-    // board_t my_Board = populate_board(
-    //         construct_board(size),
-    //         {2, 15, 25, 26, 27}
-    //     ); // len 12
+    for (auto elem : coords) {
+        int val = (size * int(elem["x_cord"])) + int(elem["y_cord"]);
+        ret.push_back(val);
+    }
 
+    return ret;
+}
+
+void main_game(int size, int iter, json config) {
+    std::vector<int> populate_list =
+        get_populate_locations(size, config["coords"]);
+    board_t my_Board = populate_board(construct_board(size), populate_list);
+
+    std::cout << "iter = 0 (Starting layout)\n";
     print_board(my_Board, size);
 
     for (int i = 0; i < iter; i++) {
-        std::cout << "iter = " << iter << "\n";
+        std::cout << "\niter = " << iter << "\n";
         my_Board = increment_board_state(my_Board);
         print_board(my_Board, size);
     }

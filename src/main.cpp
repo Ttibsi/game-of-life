@@ -1,9 +1,13 @@
+#include <argparse/argparse.hpp>
+#include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <utility>
 
-#include "../include/argparse/argparse.hpp"
 #include "game.hpp"
+
+using json = nlohmann::json;
 
 std::string version = "v0.1.0";
 
@@ -18,10 +22,25 @@ int main(int argc, char *argv[]) {
         .default_value(1)
         .scan<'i', int>()
         .help("Iteration of the board state to output");
+    program.add_argument("-j", "--json")
+        .default_value("")
+        .help("Pass in a JSON config file");
 
     program.parse_args(argc, argv);
-    int size = program.get<int>("--size");
-    int iter = program.get<int>("--iteration");
+    std::ifstream jsonstream(program.get<std::string>("--json").c_str());
+    json config = json::parse(jsonstream);
+    std::cout << "json size: " << config.size() << "\n";
 
-    main_game(size, iter);
+    int size = 0;
+    int iter = 0;
+
+    if (config.size() == 0) {
+        size = program.get<int>("--size");
+        iter = program.get<int>("--iteration");
+    } else {
+        size = config["size"];
+        iter = config["iter"];
+    }
+
+    main_game(size, iter, config);
 }
