@@ -1,8 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "../include/nlohmann/json.hpp"
 #include "board.hpp"
+#include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
 int check_neighbors(board_t board, Point cell);

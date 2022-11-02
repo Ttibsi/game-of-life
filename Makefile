@@ -16,7 +16,6 @@ all:
 
 testenv:
 	@echo "[Create Env]"
-	open -a docker
 	docker build -f Dockerfile -t env .
 	docker run -td --name="my_env" env
 

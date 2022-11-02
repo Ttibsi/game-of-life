@@ -1,5 +1,5 @@
-#include "../include/nlohmann/json.hpp"
 #include "board.hpp"
+#include <nlohmann/json.hpp>
 
 #include <algorithm>
 #include <cmath>

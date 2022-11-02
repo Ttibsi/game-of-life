@@ -1,10 +1,10 @@
+#include <argparse/argparse.hpp>
 #include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <utility>
 
-#include "../include/argparse/argparse.hpp"
-#include "../include/nlohmann/json.hpp"
 #include "game.hpp"
 
 using json = nlohmann::json;
