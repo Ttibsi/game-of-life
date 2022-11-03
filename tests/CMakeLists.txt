@@ -9,6 +9,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
+include_directories(${game-of-life_SOURCE_DIR}/include)
 
 add_executable(test
     game_test.cpp
