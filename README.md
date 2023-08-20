@@ -10,7 +10,7 @@ unit tests using `googletest` in c++
 Make sure docker is installed on your system from your package manager or from
 https://www.docker.com/ as this all builds within a container.
 
-`make run` will create the environment, build the binary, and execute the
+`make testenv run` will create the environment, build the binary, and execute the
 game. For concecutive runs after the first, make sure you run `make docker-clean`
 first.
 
